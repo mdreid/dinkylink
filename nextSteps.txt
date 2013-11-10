@@ -1,0 +1,8 @@
+11/10/2013
+Next steps:
+	-Time Function (difficulty: 1)
+	-Start displaying times after now only (difficulty: 2)
+	-Color, jinja2 (difficulty: 2)
+	-dinkylink.info rather than dinkylinkversion2.appspot.com (difficulty: 1)
+	-Scrape once a day and that's all (difficulty: 1)
+
