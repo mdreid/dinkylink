@@ -79,23 +79,167 @@ textarea {
 
 /* times.html */
 
-.Times-Container {
-    position: absolute;
-    top: 50%;
+.arrive-depart {
     left: 0;
     width: 100%;
-    margin-top: -14em;
+    margin-top: 0em;
+    top: 0em;
+    background-color: rgba(0,0,0,0);    
+}
+.arrive-depart tr{
+    left: 0;
+    width: 100%;
+    margin-top: 0em;
+    top: 0em;
+    background-color: rgba(0,0,0,0);  
+    line-height: 1em;  
+}
+
+.arrive-depart td {
+    vertical-align: top;
+}
+
+.floatingHeader {
+  position: fixed;
+  top: 2em;
+  bottom: 43em;
+  visibility: hidden;
+  background-color: #00434C;
+  text-align: center;
+  /*width: 10%;*/
+  z-index: 1025;
+}
+
+.Times-Container {
+    position: absolute;
+    /*top: 50%; */
+    top: 14.8em;
+    left: 0;
+    width: 100%;
+    margin-top: 0em;
+    height: 100%;
 }
 
 .timetable-center {
-    width: 21em;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     height: 100%;
 }
 
 .times-body {
-    background: #00434C;
+    background: rgba(239,193,100,1);
+}
+
+.places {
+    top: 50em;
+    font-size: 1em;
+    font-family: 'Open Sans', sans-serif;  
+    font-weight: 600;
+    text-align: center; 
+    margin-top: 0em;
+    /*background-color: #00434C;*/
+}
+
+.inner-places, .inner-actions {
+    margin-left:auto; 
+    margin-right:auto; 
+    width:100%
+}
+
+.actions {
+    top: 50em;
+    font-family: 'Open Sans', sans-serif;  
+    font-weight: 600;
+    text-align: center; 
+    margin-top: 0em;
+    font-color: rbga(255,255,255,0.5);
+}
+
+#span1, #span1a {
+    float: left;
+    margin-left: 5px;
+}
+
+#span2 {
+    text-align: center;
+}
+
+#span2a {
+    float: right;
+    margin-right: 2px;
+}
+
+#span3 {
+    float: right;
+    margin-right: 5px;
+}
+
+#span3a {
+    float: left;
+    margin-left: 2px;
+}
+
+#span4a {
+    float: right;
+    margin-right: 5px;
+}
+
+/*.places-table {
+    z-index: 1050;
+    top: 100em;
+}*/
+
+table tr {
+    line-height: 3em;
+}
+
+table tr td {
+    height: 100%;
+    vertical-align: middle;
+}
+
+table tr td div{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 0px;
+}
+
+
+#time-first {
+    float: left;
+    padding-left: 5px;
+    margin: 0px;
+
+}
+#time-left {
+    float: right;
+    padding-right: 2px;
+    margin: 0px;
+}
+#time-right {
+    float: left;
+    padding-left: 2px;
+    margin: 0px;
+}
+#time-last {
+    float: right;
+    padding-right: 5px;
+    margin: 0px;
+}
+
+.times {
+    font-family: 'Open Sans', sans-serif;  
+    font-weight: 400;
+    color: #FFFFFF;
+}
+
+.rows {
+    background-color: #00434C;
+}
+#row2 {
+    background-color: #08934E;
 }
 
 header {
@@ -106,35 +250,27 @@ header {
     border-radius: 0px;
     top: 0;
     border-width: 0 0 1px;
-    background-color: rgba(255,255,255,0.5);
-    color: #FFFFFF;
-    height: 2.2em;
+    background-color: rgba(239,193,100,0.95);
+    color: rgba(255,255,255,0.95);
+    height: 7.2em;
     padding-top: 0em;
 }
-
+/*rgba(255,255,255,0.5)*/
 table {
     background-color: rgba(255,255,255,0.5);
     position: relative;
     width: 100%;
-    top: 3em;
-}
-
-thead th p {
-    line-height: 0.4em;
+    top: -7.6em;
 }
  
 tr p {
     font-family: 'Open Sans', sans-serif; 
     font-weight: 400;
-    font-size: 1.0em;
+    font-size: 0.85em;
     color: rgba(255,255,255,0.8);
     text-align: left; 
     margin-top: 0em;
     }
-
-tr td p {
-    font-size: 0.75em;
-}
 
 #a-col p {
     text-align: right;
@@ -147,7 +283,7 @@ tr td p {
 }
 
 /*
-    For table rows, set it's height to be 4.69/2 em
+    For table rows, set its height to be 4.69/2 em
 */
 
 /* index.html */
@@ -176,10 +312,21 @@ h1 {
     margin-bottom: 0em;
     }
 
+h4 {
+    font-family: 'Open Sans', sans-serif; 
+    font-weight: 615;
+    /*font-weight: 400;*/
+    font-size: 1.8em;
+    color: #FFFFFF;
+    text-align: center; 
+    margin-top: -1em;
+    margin-bottom: auto;
+}
+
 h5, h6 {
     font-family: 'Open Sans', sans-serif; 
     font-style: italic; 
-    font-weight: 400;
+    font-weight: 600;
 }
 
 h5 {
@@ -187,7 +334,7 @@ h5 {
     color: #FFFFFF;
     text-align: center; 
     margin-top: 0em;
-    margin-bottom: auto;
+    margin-bottom: auto; 
 }
 
 h6 { 

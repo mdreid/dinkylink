@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!--[if IEMobile 7 ]>    <html class="no-js iem7"> <![endif]-->
-<!--[if (gt IEMobile 7)|!(IEMobile)]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
+<html>
+
+<head>
+	<meta charset="utf-8">
         <title>DinkyLink</title>
         <meta name="description" content="">
         <meta name="HandheldFriendly" content="True">
@@ -41,55 +41,303 @@
         <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
         
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="stylesheets/normalize.css">
+        <link rel="stylesheet" href="stylesheets/main.css">
 
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
-    </head>
-    <body class="times-body">
+        <script src="js/blur.min.js">
+        $('.target').blurjs({
+          source: 'body',
+          radius: 7,
+          overlay: 'rgba(255,255,255,0.4)'
+        });
 
-        <!-- Add your site or application content here -->
 
-        <script src="js/vendor/zepto.min.js"></script>
-        <script src="js/helper.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
-            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-            g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-            s.parentNode.insertBefore(g,s)}(document,"script"));
         </script>
+	
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script>
+    function UpdateTableHeaders() {
+       $(".persist-area").each(function() {
+       
+           var el             = $(this),
+               offset         = el.offset(),
+               scrollTop      = $(window).scrollTop(),
+               floatingHeader = $(".floatingHeader", this)
+           
+           if ((scrollTop > offset.top - 50) && (scrollTop < offset.top + el.height())) {
+               floatingHeader.css({
+                "visibility": "visible"
+               });
+           } else {
+               floatingHeader.css({
+                "visibility": "hidden"
+               });      
+           };
+       });
+    }
+    
+    // DOM Ready      
+    $(function() {
+    
+       var clonedHeaderRow;
+    
+       $(".persist-area").each(function() {
+           clonedHeaderRow = $(".persist-header", this);
+           clonedHeaderRow
+             .before(clonedHeaderRow.clone())
+             .css("width", clonedHeaderRow.width())
+             .addClass("floatingHeader");
+             
+       });
+       
+       $(window)
+        .scroll(UpdateTableHeaders)
+        .trigger("scroll");
+       
+    });
+  </script>
+</head>
 
-        <header>
-            <div><h5>Princeton to NYC</h5></div>
-        </header>
-        <table>
-            <thead>
-                <tr>
-                <th><p>Princeton<br>Depart</p></th>
-                <th><p>Princeton Junction<br>Arrive</p></th>
-                <th><p>Princeton Junction<br>Depart</p></th>
-                <th><p>NYC<br>Arrive</p></th>
-                </tr>
-                <!-- 
-                <tr><h6>Depart<br>Princeton</h6></tr>
-                <tr><h6>Arrive<br>Princeton Junction</h6></tr>
-                <tr><h6>Depart<br>Princeton Junction</h6></tr>
-                <tr><h6>Arrive<br>NYC</h6></tr>
-                -->
-            </thead>
-                <tr></tr>
-            <tbody>
-            {% for i in range(origin|length) %}
+<body class="times-body">
+
+  <header class="target">
+    <div><h5>NYC to Princeton</h5><br>
+    <h4>Sunday, Nov 10</h4></div>
+    <div class="places">
+      <div class="inner-places">
+        
+        <span id="span1">Penn Station</span> <span id="span2">Princeton Junction</span> <span id="span3">Princeton</span>
+        
+      </div>
+    </div>
+    <div class="actions">
+      <div class="inner-actions">
+      <table class="arrive-depart">
+      <tr>
+        <td><div><p id="time-first">Depart</p></div</td> 
+        <td><div><p id="time-left">Arrive</p></div</td> 
+        <td><div><p id="time-right">Depart</p></div</td> 
+        <td><div><p id="time-last">Arrive</p></div</td> 
+      </tr>
+    </table>
+      </div>
+    </div>
+  </header>
+
+   
+	<div class="Times-Container">
+  <div class="timetable-center">	
+
+    <table class="persist-area">
+    <!-- <table class="persist-area"> -->
+        <!-- <!-- <thead>
+          <tr>
+          <th colspan="4"><h4>Sunday, Nov 3</h4></th>
+             <th><h2>Princeton<br>Arrives:</h2></th>
+             <th>Princeton Junction<br>TRUONGCHAU</th>
+             <th>Penn Station<br>Arrives:</th>
+          </tr>
+        </thead> --> 
+
+        <tbody>
+          <!-- <tr class="times">
+             {% for i in range(origin|length) %}
             <tr>
-                <td><p>{{ origin[i] }}</p></td>
-                <td><p>{{ transferarrive[i] }}</p></td>
-                <td><p>{{ transferdepart[i] }}</p></td>
-                <td><p>{{ destination[i] }}</p></td>
+                <td><div><p>{{ origin[i] }}</p></div></td>
+                <td><div><p id="time-left">{{ transferarrive[i] }}</p></div></td>
+                <td><div><p id="time-right">{{ transferdepart[i] }}</p></div></td>
+                <td><div><p id="time-last">{{ destination[i] }}</p></div></td>
             </tr>
             {% endfor %}
-            </tbody>
-        </table>
-    </body>
+          </tr> 
+
+          <tr class="rows">
+             <td><div><p id="time-first">11:30PM</div></p></td>
+             <td><div><p id="time-left">11:45PM</div></p></td>
+             <td><div><p id="time-right">11:55PM</div></p></td>
+             <td><div><p id="time-last">12:30PM</div></p></td>
+          </tr> -->
+            {% for i in range(0, origin|length - 1, 2) %}
+          <tr id="row2" style="background-color: #F3835D">
+             <td><div><p id="time-first">{{ origin[i] }}</p></div></td>
+             <td><div><p id="time-left">{{ transferarrive[i] }}</p></div></td>
+             <td><div><p id="time-right">{{ transferdepart[i] }}</p></div></td>
+             <td><div><p id="time-last">{{ destination[i] }}</p></div></td>
+          </tr>
+          <tr style="background-color: #F35955">             
+             <td><div><p id="time-first">{{ origin[i+1] }}</p></div></td>
+             <td><div><p id="time-left">{{ transferarrive[i+1] }}</p></div></td>
+             <td><div><p id="time-right">{{ transferdepart[i+1] }}</p></div></td>
+             <td><div><p id="time-last">{{ destination[i+1] }}</p></div></td>
+          </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      
+     
+     </div></div>
+	
+	 <!--<style type="text/css" style="display: none !important;">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	body {
+		overflow-x: hidden;
+	}
+	.bsa_it_ad {
+		padding: 8px 4px 8px 12px !important;
+		position: relative;
+		border: 0 !important;
+		background: #D6D5D5 !important;
+		border-top: 0 !important;
+		box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+		font: 11px "Lucida Grande", Sans-Serif !important;
+	}
+	.bsa_it_ad:before, .bsa_it_ad:after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 6px;
+		width: 100%;
+		height: 100%;
+		background: #989898;
+		border-bottom: 6px solid #989898;
+		z-index: -1;
+		box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+	}
+	.bsa_it_ad:before {
+		top: 0;
+		left: 12px;
+		z-index: -2;
+		background: #6C6666;
+		border-bottom: 12px solid #6C6666;
+	}
+
+	.bsa_it_ad a {
+	  margin: 0 !important;
+		padding: 0 !important;
+	}
+	.bsa_it_ad a img {
+	  border: 0 !important;
+		position: static !important;
+	}
+	.bsa_it_ad a:hover img {
+		margin: 0 !important;
+	}
+	.bsa_it_ad a:hover {
+	  background: none !important;
+	}
+	.bsa_it_i {
+		margin: 0 15px 0 0 !important;
+	}
+	.bsa_it_t {
+		font-size: 14px !important;
+		margin: 12px 0 0 0 !important;
+	}
+	.bsa_it_d {
+		padding-right: 10px;
+	}
+	.bsa_it_p{
+		display: none !important;
+	}
+	#demo-bar-ad {
+		width: 416px;
+		position: absolute;
+		right: 0;
+		top: -20px;
+		font: 11px "Lucida Grande", Sans-Serif !important;
+	}
+	#bsap_aplink {
+		position: absolute;
+		color: #999;
+		text-decoration: none;
+		bottom: 8px !important;
+		right: 8px !important;
+		padding: 0 !important;
+	}
+	.bsa_it_p a:hover {
+		background:none !important;
+	}
+	#demo-top-bar {
+		text-align: left;
+		background: #e18728;
+		position: relative;
+		zoom: 1;
+		width: 100% !important;
+		z-index: 6000;
+		box-shadow: 0 0 10px black;
+		padding: 20px 0 15px;
+	}
+	#demo-bar-inside {
+		width: 960px;
+		margin: 0 auto;
+		position: relative;
+	}
+	#demo-top-bar:before, #demo-top-bar:after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 6px;
+		width: 100%;
+		height: 100%;
+		background: #e18728;
+		border-bottom: 6px solid #8F5314;
+		z-index: -1;
+		box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+	}
+	#demo-top-bar:before {
+		top: 0;
+		left: 12px;
+		background: #6C6666;
+		border-bottom: 12px solid #62390E;
+	}
+
+	#demo-bar-buttons {
+		display: inline-block;
+		width: 236px;
+		text-align: center;
+		vertical-align: top;
+		font-size: 0;
+	}
+	#demo-bar-buttons a {
+		font-size: 12px;
+		color: white;
+		display: block;
+		margin: 2px 0;
+		text-decoration: none;
+		font: 14px "Lucida Grande", Sans-Serif !important;
+	}
+	#demo-bar-buttons a:hover,
+	#demo-bar-buttons a:focus {
+		color: #333;
+	}
+
+	#demo-bar-badge {
+		display: inline-block;
+		width: 302px;
+		padding: 0 !important;
+		margin: 0 !important;
+		background-color: transparent !important;
+	}
+	#demo-bar-badge a {
+		display: block;
+		width: 100%;
+		height: 38px;
+		border-radius: 0;
+		bottom: auto;
+		margin: 0;
+		background: url(/images/examples-logo.png) no-repeat;
+		background-size: 100%;
+		overflow: hidden;
+		text-indent: -9999px;
+	}
+	#demo-bar-badge:before, #demo-bar-badge:after {
+		display: none !important;
+	}
+</style>-->
+
+</body>
+
 </html>

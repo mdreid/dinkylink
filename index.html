@@ -41,8 +41,8 @@
         <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
         
 
-        <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="stylesheets/normalize.css">
+        <link rel="stylesheet" href="stylesheets/main.css">
 
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
@@ -69,14 +69,14 @@
             <!-- <div id='talkbubble'></div> -->
             <div id='button1'>
                 <h5>Princeton to NYC</h5>
-                <p>Time until next train:<br>1 hour 20 minutes</p>
-                <a href="times.html"><span class="link-to-times"></span></a> 
+                <p>Time until next train:<br>{{ puSoon }}</p>
+                <a href="toNY"><span class="link-to-times"></span></a> 
             </div>
 
             <div id='button2'>
                 <h5>NYC to Princeton</h5>
-                <p>Time until next train:<br>52 minutes</p>
-                <a href="times.html"><span class="link-to-times"></span></a> 
+                <p>Time until next train:<br>{{  nySoon  }}</p>
+                <a href="toPU"><span class="link-to-times"></span></a> 
             </div>
         </div>    
         </div>    

@@ -1,0 +1,9 @@
+DinkyLink
+Team: Luke Cheng, Jon Ma, Malcolm Reid Jr., Thomas Truonchau, David Zhao
+HackPrinceton
+11/10/2013
+
+Our team set out to lessen a campus-wide inconvenience: figuring out train times to and from New York. 
+
+DinkyLink is a lightweight mobile web app that streamlines the process of accessing these train times. The splash page displays the time until departure each way. Alternatively, the user can specify his or her intended direction and find out train times (departure and arrival) for the rest of the day.
+
