@@ -52,28 +52,65 @@ def getPost():
 
     return [toPUhtml, toNYhtml]
 ##Reads in html file and name of destination and outputs csv file with comma spliced file of train information
-def getSoonestTrain(times):
-    from datetime import time, timedelta
+
+    # Function that gets time until soonest train (updated: 11/24)
+    def getSoonestTrain(times):
+    from datetime import time
+    import datetime
+    from pytz import timezone
+    import pytz
 
     noTrain = 'No more trains today!'
-    current = time() #UTC so 5 hours early so we add +5 
-
+    current_dt = datetime.datetime.now() 
+    eastern = timezone('US/Eastern')
+    current_dt_est = eastern.localize(current_dt)
+    curr_est = datetime.datetime.time(current_dt_est)
+    print curr_est
     for str_time in times:
+        print str_time
         parts = str_time.split(' ')
         hrmin = parts[0].split(':')
-        hr = int(hrmin[0])-1
+        hr = int(hrmin[0])
         minute = int(hrmin[1])
-        if parts[1] == 'P.M.':
+        if parts[1] == 'A.M.' and hr == 12:
+            hr = 0
+        elif parts[1] == 'P.M.':
             hr = hr+12
-        dt = time(hr - 5, minute)
-        if dt > current:
-            hrdiff = (hr - 5) - current.hour
-            mindiff = minute-current.minute
-            if mindiff < minute:
+        dt = time(hr, minute)
+        print hr
+        print dt
+        if dt > curr_est:
+            hrdiff = hr - curr_est.hour
+            mindiff = minute-curr_est.minute
+            if mindiff < 0:
+                mindiff = mindiff + 60
                 hrdiff = hrdiff-1
-            str_diff = '0' + " hour " + str(mindiff) + " minutes"
+            str_diff = str(hrdiff) + " hour " + str(mindiff) + " minutes"
             return str_diff
     return noTrain
+
+    # # old time function
+    # def getSoonestTrain(times):
+    # from datetime import time, timedelta
+
+    # noTrain = 'No more trains today!'
+    # current = time() #UTC so 5 hours early so we add +5 
+    # # for str_time in times:
+    # #     parts = str_time.split(' ')
+    # #     hrmin = parts[0].split(':')
+    # #     hr = int(hrmin[0])-1
+    # #     minute = int(hrmin[1])
+    # #     if parts[1] == 'P.M.':
+    # #         hr = hr+12
+    # #     dt = time(hr - 5, minute)
+    # #     if dt > current:
+    # #         hrdiff = (hr - 5) - current.hour
+    # #         mindiff = minute-current.minute
+    # #         if mindiff < minute:
+    # #             hrdiff = hrdiff-1
+    # #         str_diff = '0' + " hour " + str(mindiff) + " minutes"
+    # #         return str_diff
+    # # return noTrain
 
 def scrape(html,destination):
     soup = BeautifulSoup(html)
