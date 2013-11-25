@@ -197,24 +197,17 @@ h6 {
     margin-top: 0em;
 }
 
-#button1, #button2, #button3, #button4 {
+#button1, #button2 {
     width: 14.0em;
     height: 4.69em   ;
     background: #F3835D;
     margin-left:auto;
     margin-right:auto;
-    margin-top: 1em;
+    margin-top: 2em;
     padding-top: 0.5em;
     position: relative;
 }
-#button3, #button4 {
-    background: #F35955;
-}
-#button2 {
-    margin-bottom: 1.7em;
-}
-
-#button1:before, #button2:before, #button3:before, #button4:before {
+#button1:before, #button2:before {
    content:"";
    position: absolute;
    margin-top: -0.45em;
@@ -227,20 +220,12 @@ h6 {
    left: 100%;
    border-left: 20px solid #F3835D;
 }
-#button3:before {
-   left: 100%;
-   border-left: 20px solid #F35955;
-}
 #button2:before {
    right: 100%;
    border-right: 20px solid #F3835D;
 }
-#button4:before {
-   right: 100%;
-   border-right: 20px solid #F35955;
-}
 
-#button1 p, #button2 p, #button3 p, #button4 p  {
+#button1 p, #button2 p {
     font-family: 'Open Sans', sans-serif; 
     font-weight: 400;
     font-style: italic;
