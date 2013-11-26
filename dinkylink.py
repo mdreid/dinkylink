@@ -54,20 +54,22 @@ def getPost():
 ##Reads in html file and name of destination and outputs csv file with comma spliced file of train information
 
     # Function that gets time until soonest train (updated: 11/24)
-    def getSoonestTrain(times):
+def getSoonestTrain(times):
     from datetime import time
     import datetime
+    from pytz.gae import pytz
     from pytz import timezone
-    import pytz
+    import logging
 
     noTrain = 'No more trains today!'
-    current_dt = datetime.datetime.now() 
-    eastern = timezone('US/Eastern')
-    current_dt_est = eastern.localize(current_dt)
-    curr_est = datetime.datetime.time(current_dt_est)
-    print curr_est
+    tzEST = timezone('US/Eastern')
+    now = datetime.datetime.utcnow()
+    tzOffset = tzEST.utcoffset(now)
+    curr_est = now + tzOffset
+    curr_est = curr_est.time()
+    logging.info(curr_est)
     for str_time in times:
-        print str_time
+        logging.info(str_time)
         parts = str_time.split(' ')
         hrmin = parts[0].split(':')
         hr = int(hrmin[0])
@@ -80,6 +82,7 @@ def getPost():
         print hr
         print dt
         if dt > curr_est:
+            logging.info("Got here 2")
             hrdiff = hr - curr_est.hour
             mindiff = minute-curr_est.minute
             if mindiff < 0:
@@ -88,29 +91,6 @@ def getPost():
             str_diff = str(hrdiff) + " hour " + str(mindiff) + " minutes"
             return str_diff
     return noTrain
-
-    # # old time function
-    # def getSoonestTrain(times):
-    # from datetime import time, timedelta
-
-    # noTrain = 'No more trains today!'
-    # current = time() #UTC so 5 hours early so we add +5 
-    # # for str_time in times:
-    # #     parts = str_time.split(' ')
-    # #     hrmin = parts[0].split(':')
-    # #     hr = int(hrmin[0])-1
-    # #     minute = int(hrmin[1])
-    # #     if parts[1] == 'P.M.':
-    # #         hr = hr+12
-    # #     dt = time(hr - 5, minute)
-    # #     if dt > current:
-    # #         hrdiff = (hr - 5) - current.hour
-    # #         mindiff = minute-current.minute
-    # #         if mindiff < minute:
-    # #             hrdiff = hrdiff-1
-    # #         str_diff = '0' + " hour " + str(mindiff) + " minutes"
-    # #         return str_diff
-    # # return noTrain
 
 def scrape(html,destination):
     soup = BeautifulSoup(html)
@@ -213,7 +193,8 @@ class MainPage(webapp2.RequestHandler):
 
         toPUDict = scrape(getPost()[0], 'PU')
         toNYDict = scrape(getPost()[1], 'NY')
-
+        #print toPUDict
+        #print toNYDict
         global toPUdata
         toPUdata.originstring = toPUDict['origin']
         toPUdata.transferarrivestring = toPUDict['transferarrive']
@@ -229,7 +210,9 @@ class MainPage(webapp2.RequestHandler):
         toNYdata.identifier = "NY"
 
         toPUdata_query = toPUdata.query().order(-njdata.date)
+        #print toPUdata_query
         a = toPUdata_query.fetch(2)
+        #print a
         if a[0].identifier == 'NY':
             ny = a[0]
             pu = a[1]
@@ -254,6 +237,7 @@ class MainPage(webapp2.RequestHandler):
         toNYdata.put()
 
         #########Main Page Needs this###############
+        print "getting PU Time then NY time"
         puSoon = getSoonestTrain(globalPUDict['origin'])
         nySoon = getSoonestTrain(globalNYDict['origin'])
         tempSoon = {'puSoon': puSoon, 'nySoon': nySoon}
