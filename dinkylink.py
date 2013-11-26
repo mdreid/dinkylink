@@ -61,22 +61,24 @@ def getSoonestTrain(times):
     from pytz import timezone
     import logging
 
-    noTrain = 'No more trains today!'
+    results = {}
     tzEST = timezone('US/Eastern')
     now = datetime.datetime.utcnow()
     tzOffset = tzEST.utcoffset(now)
     curr_est = now + tzOffset
     curr_est = curr_est.time()
     logging.info(curr_est)
+    index = 0
     for str_time in times:
+        
         logging.info(str_time)
         parts = str_time.split(' ')
         hrmin = parts[0].split(':')
         hr = int(hrmin[0])
         minute = int(hrmin[1])
-        if parts[1] == 'A.M.' and hr == 12:
+        if parts[1] == 'AM' and hr == 12:
             hr = 0
-        elif parts[1] == 'P.M.':
+        elif parts[1] == 'PM' and hr < 12:
             hr = hr+12
         dt = time(hr, minute)
         print hr
@@ -89,8 +91,14 @@ def getSoonestTrain(times):
                 mindiff = mindiff + 60
                 hrdiff = hrdiff-1
             str_diff = str(hrdiff) + " hour " + str(mindiff) + " minutes"
-            return str_diff
-    return noTrain
+            results['diff'] = str_diff
+            results['index'] = index
+            return results
+        index = index+1
+    
+    results['diff'] = None
+    results['index'] = -1        
+    return results
 
 def scrape(html,destination):
     soup = BeautifulSoup(html)
@@ -140,8 +148,6 @@ def scrape(html,destination):
 
     Dict = {'origin': origin[1:], 'transferarrive' : transferarrive[1:], 'transferdepart': transferdepart[1:], 'destination':destination[1:]}
     return Dict
-
-    #Create csv files for to Princeton and to New York
 
 
 class njdata(ndb.Model):
@@ -237,10 +243,29 @@ class MainPage(webapp2.RequestHandler):
         toNYdata.put()
 
         #########Main Page Needs this###############
-        print "getting PU Time then NY time"
-        puSoon = getSoonestTrain(globalPUDict['origin'])
-        nySoon = getSoonestTrain(globalNYDict['origin'])
-        tempSoon = {'puSoon': puSoon, 'nySoon': nySoon}
+        noMore = 'No more trains today!'
+        putimeDict = getSoonestTrain(globalPUDict['origin'])
+        index = putimeDict['index']
+        if index == -1:
+            puny = noMore
+        else:
+            puny = putimeDict['diff']
+            global globalPUDict
+            for element in globalPUDict.keys():
+                globalPUDict[element] = globalPUDict[element][index:]
+
+
+        nytimeDict = getSoonestTrain(globalNYDict['origin'])
+        index = nytimeDict['index']
+        if index == -1:
+            nypu = noMore
+        else:
+            nypu = nytimeDict['diff']            
+            global globalNYDict
+            for element in globalNYDict.keys():
+                globalNYDict[element] = globalNYDict[element][index:]
+
+        tempSoon = {'puSoon': nypu, 'nySoon': puny}
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(tempSoon))

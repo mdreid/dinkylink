@@ -1,4 +1,4 @@
-application: dinkylinkversion2
+application: princetondinkylink
 version: 1
 runtime: python27
 api_version: 1
@@ -16,3 +16,11 @@ libraries:
   version: latest
 - name: jinja2
   version: latest
+
+# application: scraper-cron
+# version: 1
+# runtime: python27
+# api_version: 1
+
+# handlers:
+# - url: /scrape
